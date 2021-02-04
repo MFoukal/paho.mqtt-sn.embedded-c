@@ -402,13 +402,26 @@ void XBee::setApiMode(uint8_t mode)
  =========================================*/
 SerialPort::SerialPort()
 {
-	_tio.c_iflag = IGNBRK | IGNPAR;
-	_tio.c_cflag = CS8 | CLOCAL | CRTSCTS | CREAD;
-	_tio.c_cc[VINTR] = 0;
-	_tio.c_cc[VTIME] = 10;   // 1 sec.
-	_tio.c_cc[VMIN] = 1;
-	_fd = 0;
+
+	_tio.c_cflag = (_tio.c_cflag & ~CSIZE) | CS8;     // 8-bit chars
+        // disable IGNBRK for mismatched speed tests; otherwise receive break
+        // as \000 chars
+        _tio.c_iflag &= ~IGNBRK;         // disable break processing
+        _tio.c_lflag = 0;                // no signaling chars, no echo,
+                                        // no canonical processing
+        _tio.c_oflag = 0;                // no remapping, no delays
+        _tio.c_cc[VMIN]  = 0;            // read doesn't block
+        _tio.c_cc[VTIME] = 5;            // 0.5 seconds read timeout
+
+        _tio.c_iflag &= ~(IXON | IXOFF | IXANY); // shut off xon/xoff ctrl
+
+        _tio.c_cflag |= (CLOCAL | CREAD);// ignore modem controls,
+                                        // enable reading
+	_tio.c_cflag &= ~(PARENB | PARODD);      // shut off parity
+        _tio.c_cflag &= ~CSTOPB;
+        _tio.c_cflag &= ~CRTSCTS;
 }
+
 
 SerialPort::~SerialPort()
 {
