@@ -15,11 +15,12 @@ SRCDIR := src
 SUBDIR := ../MQTTSNPacket/src
 
 OS := linux
-SENSORNET := udp
+SENSORNET := xbee
 TEST := tests
 
-INSTALL_DIR=../../
-CONFIG_DIR=../../
+INSTALL_DIR=$(DESTDIR)/usr/bin/
+CONFIG_DIR=$(DESTDIR)/etc/mqttsn-gw/
+
 
 CPPSRCS :=  \
 $(SRCDIR)/MQTTGWConnectionHandler.cpp \
@@ -150,13 +151,16 @@ $(OUTDIR)/$(SUBDIR)/%.o:$(SUBDIR)/%.c
 clean:
 	rm -rf $(OUTDIR)
 
-install:
+install: 
+	mkdir -p $(INSTALL_DIR)
+	mkdir -p $(CONFIG_DIR)
 	cp -pf $(PROG) $(INSTALL_DIR)
 	cp -pf $(LPROG) $(INSTALL_DIR)
 	cp -pf $(CONFIG) $(CONFIG_DIR)
 	cp -pf $(CLIENTS) $(CONFIG_DIR)
 	cp -pf $(PREDEFTOPIC) $(CONFIG_DIR)
-	
+	chown -R root:root $(INSTALL_DIR)
+	chown -R root:root $(CONFIG_DIR)	
 
 exectest:
 	./$(OUTDIR)/$(TESTPROGNAME) -f ./gateway.conf
