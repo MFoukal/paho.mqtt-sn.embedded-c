@@ -91,7 +91,7 @@ DEFS :=
 CXX := g++
 
 LIB :=
-LIBS += $(LIB) -L/usr/local/lib -L/usr/local/opt/openssl/lib/
+LIBS += $(LIB) -L=/usr/local/lib -L=/usr/local/opt/openssl/lib/
 
 LDFLAGS :=
 CXXFLAGS := -Wall -O3 -std=c++11
