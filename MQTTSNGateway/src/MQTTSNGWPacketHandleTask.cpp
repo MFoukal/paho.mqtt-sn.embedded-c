@@ -104,7 +104,11 @@ void PacketHandleTask::run()
 	char msgId[6];
 	memset(msgId, 0, 6);
 
-	_advertiseTimer.start(_gateway->getGWParams()->keepAlive * 1000UL);
+	// Keepalive value 0 disables keepalive messages
+	if (_gateway->getGWParams()->keepAlive > 0)
+	{
+		_advertiseTimer.start(_gateway->getGWParams()->keepAlive * 1000UL);
+	}
 
 	while (true)
 	{

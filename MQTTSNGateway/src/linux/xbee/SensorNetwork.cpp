@@ -301,7 +301,7 @@ int XBee::readApiFrame(uint8_t* recvData){
     }
     else
     {
-    	D_NWSTACK("    checksum error  %02x\r\n", 0xff - checksum);
+    	D_NWSTACK("    checksum error  %02x %02x\r\n", buf, 0xff - checksum);
     	goto errexit;
     }
 errexit:
