@@ -25,14 +25,13 @@ test -x ${DAEMON} || exit 0
 
 umask 022
 
-. /etc/init.d/functions
 
 export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
 
 case "$1" in
     start)
         echo "Starting MQTT-SN Gateway" "MQTT-SNGateway"
-        if start-stop-daemon --start --quiet --oknodo --background  --make-pidfile --pidfile ${PIDFILE} --exec ${DAEMON} -- -f /etc/mqttsn-gw/gateway.conf ; then
+        if start-stop-daemon -S -q -b -m -p ${PIDFILE} -x ${DAEMON} -- -f /etc/mqttsn-gw/gateway.conf ; then
             exit 0
         else
             exit 1
@@ -40,7 +39,7 @@ case "$1" in
         ;;
     stop)
         echo "Stopping MQTT-SNGateway" "MQTT-SNGateway"
-        if start-stop-daemon --stop --quiet --oknodo --pidfile ${PIDFILE}; then
+        if start-stop-daemon -S -q -s SIGKILL -p ${PIDFILE}; then
             rm -f ${PIDFILE}
             exit 0
         else
@@ -61,10 +60,10 @@ case "$1" in
 
     restart)
         echo "Restarting MQTT-SNGateway" "MQTT-SNGateway"
-        if start-stop-daemon --stop --quiet --oknodo --retry 30 --pidfile ${PIDFILE}; then
+        if start-stop-daemon -K -q -s SIGKILL -p ${PIDFILE}; then
             rm -f ${PIDFILE}
         fi
-        if start-stop-daemon --start --quiet --oknodo --background --make-pidfile --pidfile ${PIDFILE} --exec ${DAEMON} -- -f /etc/mqttsn-gw/gateway.conf ; then
+        if start-stop-daemon -S -q -b -m -p ${PIDFILE} -x ${DAEMON} -- -f /etc/mqttsn-gw/gateway.conf ; then
             exit 0
         else
             exit 1
@@ -74,7 +73,12 @@ case "$1" in
     status)
         status ${DAEMON} && exit 0 || exit $?
         ;;
-
+    eanble)
+        exit 0
+	;;
+    disable)
+       exit 0
+       ;;
     *)
         echo "Usage: $0 {start|stop|reload|force-reload|restart|status}"
         exit 1
