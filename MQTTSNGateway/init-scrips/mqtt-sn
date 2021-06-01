@@ -1,87 +1,46 @@
-#! /bin/sh
+#!/bin/sh /etc/rc.common
+# Starts and stops MQTT-SN GW
+# /etc/init.d/mqtt-sn
 
+START=90
+STOP=10
 
-### BEGIN INIT INFO
-# Provides:         mqtt-sn
-# Required-Start:   $remote_fs $syslog
-# Required-Stop:    $remote_fs $syslog
-# Default-Start:    2 3 4 5
-# Default-Stop:     0 1 6
-# Short-Description:    MQTTSN Gateway
-# Description: 
-#  This GW traslate MQTT-SN messaget to MQTT and provide connection to local broaker
-#  Transport (MQTT) protocol.
-#  
-### END INIT INFO
-
-set -e
-
+# PID and binary file for start-stop-daemon
 PIDFILE=/var/run/mqtt-sn.pid
 DAEMON=/usr/bin/MQTT-SNGateway
 
-# start and stop
-
+# test if binary exists and execute permission is granted
 test -x ${DAEMON} || exit 0
-
-umask 022
-
 
 export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
 
-case "$1" in
-    start)
-        echo "Starting MQTT-SN Gateway" "MQTT-SNGateway"
-        if start-stop-daemon -S -q -b -m -p ${PIDFILE} -x ${DAEMON} -- -f /etc/mqttsn-gw/gateway.conf ; then
-            exit 0
-        else
-            exit 1
-        fi
-        ;;
-    stop)
-        echo "Stopping MQTT-SNGateway" "MQTT-SNGateway"
-        if start-stop-daemon -S -q -s SIGKILL -p ${PIDFILE}; then
-            rm -f ${PIDFILE}
-            exit 0
-        else
-            exit 1
-        fi
-        ;;
-
-
-    reload|force-reload)
-        if [ -f ${PIDFILE} ] ; then
-            echo "Reloading configuration for MQTT-SNGateway"
-            pid=`cat ${PIDFILE}`
-            kill -HUP $pid
-        else
-            echo "MQTT-SN does not seem to be running"
-        fi
-        ;;
-
-    restart)
-        echo "Restarting MQTT-SNGateway" "MQTT-SNGateway"
-        if start-stop-daemon -K -q -s SIGKILL -p ${PIDFILE}; then
-            rm -f ${PIDFILE}
-        fi
-        if start-stop-daemon -S -q -b -m -p ${PIDFILE} -x ${DAEMON} -- -f /etc/mqttsn-gw/gateway.conf ; then
-            exit 0
-        else
-            exit 1
-        fi
-        ;;
-
-    status)
-        status ${DAEMON} && exit 0 || exit $?
-        ;;
-    eanble)
+start() {
+    echo "Starting MQTT-SN Gateway"
+    if start-stop-daemon -S -q -b -m -p ${PIDFILE} -x ${DAEMON} -- -f /etc/mqttsn-gw/gateway.conf ; then
         exit 0
-	;;
-    disable)
-       exit 0
-       ;;
-    *)
-        echo "Usage: $0 {start|stop|reload|force-reload|restart|status}"
+    else
         exit 1
-esac
+    fi
+}
 
-exit 0
+stop() {
+    echo "Stopping MQTT-SNGateway"
+    if start-stop-daemon -K -q -s SIGKILL -p ${PIDFILE}; then
+        rm -f ${PIDFILE}
+        exit 0
+    else
+        exit 1
+    fi
+}
+
+restart() {
+    echo "Restarting MQTT-SNGateway" "MQTT-SNGateway"
+    if start-stop-daemon -K -q -s SIGKILL -p ${PIDFILE}; then
+        rm -f ${PIDFILE}
+    fi
+    if start-stop-daemon -S -q -b -m -p ${PIDFILE} -x ${DAEMON} -- -f /etc/mqttsn-gw/gateway.conf ; then
+        exit 0
+    else
+        exit 1
+    fi
+}
