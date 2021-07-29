@@ -35,7 +35,7 @@ namespace MQTTSNGW
 
 // Data interface
 #define RFM_TX_CMD		         0x02
-#define RFM_RX_ACK               0x03
+#define RFM_TX_ACK               0x03
 #define RFM_RX_CMD	             0x04
 
 // Reserved for serial frame handling
