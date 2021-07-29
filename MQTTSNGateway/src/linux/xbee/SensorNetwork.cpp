@@ -318,8 +318,8 @@ int XBee::send(const uint8_t* payload, uint8_t pLen, SensorNetAddress* addr){
     send(0x00);              // Message Length
     send(14 + pLen);         // Message Length
 
-    _serialPort->send(RFM_RX_CMD); // Transmit Request API
-    checksum += RFM_RX_CMD;
+    _serialPort->send(RFM_TX_CMD); // Transmit Request API
+    checksum += RFM_TX_CMD;
 
     if (_frameId++ == 0x00 ) // Frame ID
 	{
