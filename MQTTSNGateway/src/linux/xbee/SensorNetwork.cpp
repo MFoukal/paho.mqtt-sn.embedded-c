@@ -234,7 +234,7 @@ int XBee::recv(uint8_t* buf, uint16_t bufLen, SensorNetAddress* clientAddr)
 				memcpy( buf, data + 12, len);
 				return len;
 			}
-			else if ( data[0] == RFM_TX_CMD )
+			else if ( data[0] == RFM_TX_ACK )
 			{
 				_respCd = data[5];
 				_respId = data[1];
