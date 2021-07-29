@@ -226,7 +226,7 @@ int XBee::recv(uint8_t* buf, uint16_t bufLen, SensorNetAddress* clientAddr)
 		if ( (len = readApiFrame(data)) > 0 )
 		{
 
-			if ( data[0] == API_RESPONSE )
+			if ( data[0] == RFM_RX_CMD )
 			{
 				memcpy(clientAddr->_address64, data + 1, 8);
 				memcpy(clientAddr->_address16, data + 9, 2);
@@ -234,7 +234,7 @@ int XBee::recv(uint8_t* buf, uint16_t bufLen, SensorNetAddress* clientAddr)
 				memcpy( buf, data + 12, len);
 				return len;
 			}
-			else if ( data[0] == API_XMITSTATUS )
+			else if ( data[0] == RFM_TX_CMD )
 			{
 				_respCd = data[5];
 				_respId = data[1];
@@ -318,8 +318,8 @@ int XBee::send(const uint8_t* payload, uint8_t pLen, SensorNetAddress* addr){
     send(0x00);              // Message Length
     send(14 + pLen);         // Message Length
 
-    _serialPort->send(API_XMITREQUEST); // Transmit Request API
-    checksum += API_XMITREQUEST;
+    _serialPort->send(RFM_RX_CMD); // Transmit Request API
+    checksum += RFM_RX_CMD;
 
     if (_frameId++ == 0x00 ) // Frame ID
 	{

@@ -33,10 +33,8 @@ namespace MQTTSNGW
   #define D_NWSTACK(...)
 #endif
 
-#define API_XMITREQUEST          0x10
-#define API_RESPONSE             0x90
-#define API_MODEMSTATUS          0x8A
-#define API_XMITSTATUS           0x8B
+#define RFM_TX_CMD		         0x10
+#define RFM_RX_CMD               0x90
 
 #define XMIT_STATUS_TIME_OVER    5000
 
