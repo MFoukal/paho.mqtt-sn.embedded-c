@@ -370,7 +370,7 @@ int XBee::send(const uint8_t* payload, uint8_t pLen, SensorNetAddress* addr){
 
 void XBee::send(uint8_t c)
 {
-  if(_apiMode == 2 && (c == START_BYTE || c == ESCAPE || c == XON || c == XOFF)){
+  if(_apiMode == 2 && (c == START_BYTE || c == ESCAPE)){
 	  _serialPort->send(ESCAPE);
 	  _serialPort->send(c ^ 0x20);
   }else{

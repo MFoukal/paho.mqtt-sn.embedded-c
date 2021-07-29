@@ -42,8 +42,6 @@ namespace MQTTSNGW
 
 #define START_BYTE               0x7e
 #define ESCAPE                   0x7d
-#define XON                      0x11
-#define XOFF                     0x13
 
 /*===========================================
   Class  SerialPort
