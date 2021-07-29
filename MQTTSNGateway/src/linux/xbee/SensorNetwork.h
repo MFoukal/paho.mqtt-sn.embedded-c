@@ -34,15 +34,15 @@ namespace MQTTSNGW
 #endif
 
 // Data interface
-#define RFM_TX_CMD		         0x02
-#define RFM_TX_ACK               0x03
-#define RFM_RX_CMD	             0x04
+#define RFM_TX_CMD				0x02
+#define RFM_TX_ACK				0x03
+#define RFM_RX_CMD				0x04
 
 // Reserved for serial frame handling
-#define START_BYTE               0x7e
-#define ESCAPE                   0x7d
+#define START_BYTE				0x7e
+#define ESCAPE					0x7d
 
-#define XMIT_STATUS_TIME_OVER    5000
+#define XMIT_STATUS_TIME_OVER	5000
 
 
 /*===========================================
