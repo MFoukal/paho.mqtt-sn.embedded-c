@@ -34,7 +34,9 @@ namespace MQTTSNGW
 #endif
 
 #define RFM_TX_CMD		         0x10
-#define RFM_RX_CMD               0x90
+#define RFM_RX_CMD	             0x90
+#define API_MODEMSTATUS          0x8A
+#define RFM_RX_ACK               0x8B
 
 #define XMIT_STATUS_TIME_OVER    5000
 
