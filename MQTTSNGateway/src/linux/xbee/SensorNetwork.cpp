@@ -222,23 +222,24 @@ int XBee::recv(uint8_t* buf, uint16_t bufLen, SensorNetAddress* clientAddr)
 
 	while ( true )
 	{
-
 		if ( (len = readApiFrame(data)) > 0 )
 		{
-
-			if ( data[0] == RFM_RX_CMD )
+			u_int8_t commandChar = data[0];
+			switch (commandChar)
 			{
-				memcpy(clientAddr->_address64, data + 1, 8);
-				memcpy(clientAddr->_address16, data + 9, 2);
-				len -= 12;
-				memcpy( buf, data + 12, len);
-				return len;
-			}
-			else if ( data[0] == RFM_TX_ACK )
-			{
-				_respCd = data[5];
-				_respId = data[1];
-				_sem.post();
+				case RFM_RX_CMD:
+					memcpy(clientAddr->_address64, data + 1, 8);
+					memcpy(clientAddr->_address16, data + 9, 2);
+					len -= 12;
+					memcpy( buf, data + 12, len);
+					return len;
+				case RFM_TX_ACK:
+					_respCd = data[5];
+					_respId = data[1];
+					_sem.post();
+					break;
+				default:
+					break;
 			}
 		}
 		else
