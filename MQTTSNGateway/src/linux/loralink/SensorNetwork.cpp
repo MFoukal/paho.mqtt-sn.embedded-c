@@ -427,7 +427,7 @@ int LoRaLink::send(LoRaLinkPayloadType_t type, const uint8_t* payload, uint16_t 
 
 void LoRaLink::send(uint8_t c)
 {
-  if( (c == START_BYTE || c == ESCAPE || c == XON || c == XOFF)){
+  if( (c == START_BYTE || c == ESCAPE)){
 	  _serialPortTx->send(ESCAPE);
 	  _serialPortTx->send(c ^ PAD);
   }else{

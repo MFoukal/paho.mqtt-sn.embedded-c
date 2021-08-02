@@ -33,17 +33,17 @@ namespace MQTTSNGW
   #define D_NWSTACK(...)
 #endif
 
-#define API_XMITREQUEST          0x10
-#define API_RESPONSE             0x90
-#define API_MODEMSTATUS          0x8A
-#define API_XMITSTATUS           0x8B
+// Data interface
+#define RFM_TX_CMD				0x02
+#define RFM_TX_ACK				0x03
+#define RFM_RX_CMD				0x04
 
-#define XMIT_STATUS_TIME_OVER    5000
+// Reserved for serial frame handling
+#define START_BYTE				0x7e
+#define ESCAPE					0x7d
 
-#define START_BYTE               0x7e
-#define ESCAPE                   0x7d
-#define XON                      0x11
-#define XOFF                     0x13
+#define XMIT_STATUS_TIME_OVER	5000
+
 
 /*===========================================
   Class  SerialPort
